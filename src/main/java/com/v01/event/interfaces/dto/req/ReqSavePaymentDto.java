@@ -1,5 +1,6 @@
-package com.v01.event.interfaces.param;
+package com.v01.event.interfaces.dto.req;
 
+import com.v01.event.support.enums.BalanceReason;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class PaymentParam {
+@NoArgsConstructor
+public class ReqSavePaymentDto {
+
     private Long userId;
-    private Long orderId;
     private Long amount;
+    private String reason;
+
+
 }

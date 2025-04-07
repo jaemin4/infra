@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentParam {
+public class UseBalanceParam {
+
     private Long userId;
-    private Long orderId;
     private Long amount;
+
 }

@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.param;
+package com.v01.event.interfaces.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class PaymentParam {
+@NoArgsConstructor
+public class ReqPaymentHistoryDto {
     private Long userId;
-    private Long orderId;
     private Long amount;
+    private String reason;
 }

@@ -9,16 +9,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payment {
-    private Long id;
+public class PaymentHistory {
+    private Long paymentHistoryId;
     private Long userId;
-    private Long orderId;
-    private int amount;
+    private Long amount;
+    private String reason;
 
-    public Payment(Long userId, Long orderId, int amount) {
+    public PaymentHistory(Long userId, Long amount, String reason) {
         this.userId = userId;
-        this.orderId = orderId;
         this.amount = amount;
+        this.reason = reason;
     }
-
 }

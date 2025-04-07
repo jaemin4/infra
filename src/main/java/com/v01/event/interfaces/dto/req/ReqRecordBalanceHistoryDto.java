@@ -1,14 +1,17 @@
-package com.v01.event.domain.payment;
+package com.v01.event.interfaces.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentCompletedEvent {
+@Getter
+@Setter
+public class ReqRecordBalanceHistoryDto {
     private Long userId;
-    private Long orderId;
-    private int amount;
+    private Long amount;
+
+
 }
