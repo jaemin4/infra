@@ -1,5 +1,7 @@
 package com.v01.event.interfaces.api;
 
+import com.v01.event.interfaces.dto.res.ResCompletePaymentDto;
+import com.v01.event.interfaces.rest.ApiResponse;
 import com.v01.event.interfaces.front.PaymentFrontService;
 import com.v01.event.interfaces.param.PaymentParam;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
     private final PaymentFrontService paymentFrontService;
 
+
     @PostMapping(value = "/pay", consumes = "application/json")
-    public ResponseEntity<String> completePayment(@RequestBody PaymentParam param) {
-        paymentFrontService.completePayment(param);
-        return ResponseEntity.ok("결제 완료");
+    public ResponseEntity<ApiResponse<ResCompletePaymentDto>> completePayment(@RequestBody PaymentParam param) {
+        ResCompletePaymentDto resDto = paymentFrontService.completePayment(param);
+        ApiResponse<ResCompletePaymentDto> response = new ApiResponse<>("결제 완료", resDto);
+
+        return ResponseEntity.ok(response);
     }
 }

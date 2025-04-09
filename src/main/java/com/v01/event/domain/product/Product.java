@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.param;
+package com.v01.event.domain.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentParam {
-    private Long userId;
+public class Product {
+
     private Long productId;
-    private Long quantity;
+    private String productName;
+    private Long productPrice;
+    private Long productQuantity;
+
+
 }

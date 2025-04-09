@@ -12,8 +12,11 @@ public class BalanceService {
     private final BalanceRepository balanceRepository;
     private final BalanceHistoryRepository balanceHistoryRepository;
 
-    public void useBalance(final ReqUseBalanceDto DTO) {
+    public void useableBalnce(final ReqUseBalanceDto DTO) {
         Balance balance = balanceRepository.findByUserId(DTO.getUserId());
+        if(balance == null) {
+            throw new RuntimeException(DTO.getUserId().toString() + " : 해당 유저가 존재하지 않습니다");
+        }
         balance.decrease(DTO.getAmount());
 
         balanceRepository.updateOrSaveBalance(balance);

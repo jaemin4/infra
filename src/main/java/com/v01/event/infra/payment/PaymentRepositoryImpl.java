@@ -15,7 +15,7 @@ public class PaymentRepositoryImpl implements PaymentHistoryRepository {
     private final PaymentHistoryLocalDatabase paymentLocalRepository;
 
     @Override
-    public void save(final PaymentHistory paymentHistory) {
+    public void save(PaymentHistory paymentHistory) {
         paymentLocalRepository.save(paymentHistory);
 
         log.info("Saved Payment {}", Utils.toJson(paymentHistory));

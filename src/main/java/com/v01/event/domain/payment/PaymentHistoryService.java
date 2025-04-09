@@ -10,7 +10,7 @@ public class PaymentHistoryService {
 
     private final PaymentHistoryRepository paymentHistoryRepository;
 
-    public void recordPaymentHistory(final ReqPaymentHistoryDto DTO) {
+    public void recordPaymentHistory(ReqPaymentHistoryDto DTO) {
         paymentHistoryRepository.save(new PaymentHistory(
                 DTO.getUserId(),
                 DTO.getAmount(),

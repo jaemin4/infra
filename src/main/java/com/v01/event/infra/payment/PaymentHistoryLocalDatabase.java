@@ -12,13 +12,13 @@ public class PaymentHistoryLocalDatabase {
     private final Map<Long, PaymentHistory> localDb = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    public void save(final PaymentHistory paymentHistory) {
+    public void save(PaymentHistory paymentHistory) {
         final Long id = idGenerator.getAndIncrement();
         paymentHistory.setPaymentHistoryId(id);
         localDb.put(id, paymentHistory);
     }
 
-    public PaymentHistory findById(final Long id) {
+    public PaymentHistory findById(Long id) {
         return localDb.get(id);
     }
 
