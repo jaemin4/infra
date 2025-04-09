@@ -20,24 +20,5 @@ public class Balance {
         this.amount = amount;
     }
 
-    public void decrease(Long amount){
-        if (amount == null || amount <= 0) {
-            throw new RuntimeException("차감할 금액은 0보다 커야 합니다.");
-        }
-
-        if (this.amount < amount) {
-            throw new RuntimeException("잔액 부족: 현재 잔액 = " + this.amount);
-        }
-
-        this.amount -= amount;
-    }
-
-    public void increase(Long amount){
-        if (amount == null || amount <= 0) {
-            throw new RuntimeException("증액할 금액은 0보다 커야 합니다.");
-        }
-
-        this.amount += amount;
-    }
 
 }

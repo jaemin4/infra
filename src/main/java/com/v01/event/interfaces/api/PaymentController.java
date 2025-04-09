@@ -18,7 +18,7 @@ public class PaymentController {
     private final PaymentFrontService paymentFrontService;
 
 
-    @PostMapping(value = "/pay", consumes = "application/json")
+    @PostMapping(value = "/pay")
     public ResponseEntity<ApiResponse<ResCompletePaymentDto>> completePayment(@RequestBody PaymentParam param) {
         ResCompletePaymentDto resDto = paymentFrontService.completePayment(param);
         ApiResponse<ResCompletePaymentDto> response = new ApiResponse<>("결제 완료", resDto);

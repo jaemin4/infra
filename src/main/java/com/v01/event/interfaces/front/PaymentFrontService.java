@@ -1,5 +1,6 @@
 package com.v01.event.interfaces.front;
 
+import com.v01.event.domain.balance.Balance;
 import com.v01.event.domain.balance.BalanceService;
 import com.v01.event.domain.payment.PaymentHistoryService;
 import com.v01.event.domain.product.Product;
@@ -24,6 +25,7 @@ public class PaymentFrontService {
     private final PaymentHistoryService paymentHistoryService;
     private final ProductService productService;
 
+
     public ResCompletePaymentDto completePayment(PaymentParam param) {
         final String balanceReason = BalanceReason.PURCHASE.name();
 
@@ -35,7 +37,7 @@ public class PaymentFrontService {
         log.info("재고 유효성 통과");
 
         // TODO 잔액 사용 + 유저 유효성
-        balanceService.useableBalnce(new ReqUseBalanceDto(
+        Balance balance = balanceService.useableBalnce(new ReqUseBalanceDto(
                 param.getUserId(),product.getProductPrice())
         );
 
@@ -58,7 +60,7 @@ public class PaymentFrontService {
 
         return new ResCompletePaymentDto(
                 product.getProductName(),
-                product.getProductPrice()
+                balance.getAmount()
         );
     }
 

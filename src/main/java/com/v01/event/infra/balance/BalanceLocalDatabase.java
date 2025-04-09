@@ -21,7 +21,7 @@ public class BalanceLocalDatabase {
         // 기본 유저 생성: userId=1, amount=100000
         Balance defaultUser = new Balance();
         defaultUser.setUserId(1L);
-        defaultUser.setAmount(100_000L);
+        defaultUser.setAmount(100_000_000L);
 
         long id = idGenerator.incrementAndGet();
         defaultUser.setBalanceId(id);
@@ -40,7 +40,7 @@ public class BalanceLocalDatabase {
         return null;
     }
 
-    public void updateOrSaveBalance(Balance balance) {
+    public Balance updateOrSaveBalance(Balance balance) {
         Long userId = balance.getUserId();
 
         // TODO 기존 Balance 찾아서 있으면 update, 없으면 새로 저장
@@ -51,11 +51,12 @@ public class BalanceLocalDatabase {
 
         if (existingId.isPresent()) {
             localDb.put(existingId.get(), balance);
-            balance.setBalanceId(existingId.get());
+            return localDb.get(existingId.get());
         } else {
             long id = idGenerator.incrementAndGet();
             balance.setBalanceId(id);
             localDb.put(id, balance);
+            return localDb.get(id);
         }
     }
 

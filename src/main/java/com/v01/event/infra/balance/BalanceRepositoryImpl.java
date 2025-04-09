@@ -14,8 +14,8 @@ public class BalanceRepositoryImpl implements BalanceRepository {
     private final BalanceLocalDatabase balanceLocalDatabase;
 
     @Override
-    public void updateOrSaveBalance(Balance balance) {
-        balanceLocalDatabase.updateOrSaveBalance(balance);
+    public Balance updateOrSaveBalance(Balance balance) {
+        return balanceLocalDatabase.updateOrSaveBalance(balance);
     }
 
     @Override
