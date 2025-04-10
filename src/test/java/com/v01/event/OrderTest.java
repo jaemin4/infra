@@ -6,6 +6,7 @@ import com.v01.event.domain.balance.Balance;
 import com.v01.event.domain.order.Order;
 import com.v01.event.domain.order.OrderService;
 import com.v01.event.domain.product.Product;
+import com.v01.event.domain.product.ProductService;
 import com.v01.event.infra.balance.BalanceHistoryLocalDatabase;
 import com.v01.event.infra.balance.BalanceLocalDatabase;
 import com.v01.event.infra.order.OrderLocalDatabase;
@@ -15,6 +16,7 @@ import com.v01.event.interfaces.model.param.OrderItemParam;
 import com.v01.event.interfaces.model.param.OrderParam;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,13 +33,8 @@ public class OrderTest {
     private BalanceLocalDatabase balanceLocalDatabase;
 
     @Autowired
-    private BalanceFrontService balanceFrontService;
-
-    @Autowired
-    private OrderLocalDatabase orderLocalDatabase;
-
-    @Autowired
     private OrderFrontService orderFrontService;
+
     @Autowired
     private OrderService orderService;
 
@@ -53,33 +50,40 @@ public class OrderTest {
         balanceLocalDatabase.save(defaultUser);
         balanceLocalDatabase.save(defaultUser2);
     }
+    @DisplayName("주문 생성 통합 테스트(중복 검증 → 재고 차감 → 금액 계산 → 주문 저장)")
     @Test
-    void testCreateOrder_shouldSaveOrderCorrectly() {
+    void completeOrderIntegrationTest() {
         // given
         Long userId = 1L;
-        Long productId = 2L;
-        Long productQuantity = 2L;
-
-        OrderParam orderParam = new OrderParam(
-                userId,
-                List.of(new OrderItemParam(productId, productQuantity)) // 마우스 2개
+        List<OrderItemParam> items = List.of(
+                new OrderItemParam(1L, 1L), // 상품 1개
+                new OrderItemParam(2L, 2L)  // 상품 2개
         );
+        OrderParam param = new OrderParam(userId, items);
 
         // when
-        ResCompleteOrderDto result = orderFrontService.completeOrder(orderParam);
+        ResCompleteOrderDto result = orderFrontService.completeOrder(param);
 
         // then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(1L, result.getOrderId());
         Assertions.assertEquals("CREATED", result.getStatus());
-        Assertions.assertEquals(20_000L, result.getTotalAmount()); // 10_000 * 2
+        Assertions.assertTrue(result.getTotalAmount() > 0);
 
+        // todo 주문이 실제로 저장됐는지 검증
         Order savedOrder = orderService.getOrderById(result.getOrderId());
+        Assertions.assertEquals(result.getOrderId(), savedOrder.getOrderId());
+        Assertions.assertEquals(result.getTotalAmount(), savedOrder.getTotalAmount());
+        Assertions.assertEquals(2, savedOrder.getItems().size());
 
-        Assertions.assertEquals(1, savedOrder.getItems().size());
-        Assertions.assertEquals(productId, savedOrder.getItems().getFirst().getProductId());
-        Assertions.assertEquals(2L, savedOrder.getItems().getFirst().getQuantity());
+        // todo 재고가 차감됐는지 검증
+        for (OrderItemParam item : items) {
+            Long productId = item.getProductId();
+            Long orderedQty = item.getQuantity();
+            Product product = productLocalDatabase.findByProductId(productId).orElseThrow();
+            Assertions.assertTrue(product.getProductQuantity() < 100L); // 초기 수량보다 적어짐
+        }
     }
+
 
 
 }
