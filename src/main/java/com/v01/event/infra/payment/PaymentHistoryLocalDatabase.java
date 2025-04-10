@@ -21,11 +21,6 @@ public class PaymentHistoryLocalDatabase {
         localDb.put(id, paymentHistory);
     }
 
-    public PaymentHistory findById(Long id) {
-        return localDb.get(id);
-    }
-
-
     public List<PaymentHistory> findAll() {
         return new ArrayList<>(localDb.values());
     }

@@ -16,5 +16,10 @@ public class Product {
     private Long productPrice;
     private Long productQuantity;
 
+    public Product(String productName, Long productPrice, Long productQuantity) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productQuantity = productQuantity;
+    }
 
 }

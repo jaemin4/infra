@@ -15,7 +15,11 @@ public class ProductLocalDatabase {
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     public Optional<Product> findByProductId(Long productId) {
-        return Optional.ofNullable(localDb.get(productId));
+        if (productId == null) return Optional.empty();
+
+        return localDb.values().stream()
+                .filter(product -> productId.equals(product.getProductId()))
+                .findFirst();
     }
 
     public Product decreaseStock(Product product) {
@@ -35,5 +39,7 @@ public class ProductLocalDatabase {
         localDb.put(id, product);
     }
 
-
+    public void deleteById(Long productId) {
+        localDb.remove(productId);
+    }
 }

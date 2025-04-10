@@ -14,7 +14,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final ProductLocalDatabase productLocalDatabase;
 
     @Override
-    public Optional<Product> findByStockId(Long stockId) {
+    public Optional<Product> findByProductId(Long stockId) {
         return productLocalDatabase.findByProductId(stockId);
     }
 

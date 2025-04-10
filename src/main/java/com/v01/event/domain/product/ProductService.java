@@ -4,7 +4,6 @@ import com.v01.event.interfaces.model.dto.req.ReqDecreaseStockDto;
 import com.v01.event.interfaces.model.param.ReqPayProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product decreaseAbleStock(ReqDecreaseStockDto DTO) {
-        Product product = productRepository.findByStockId(DTO.getProductId()).orElseThrow(
+        Product product = productRepository.findByProductId(DTO.getProductId()).orElseThrow(
                 () -> new RuntimeException("Product not found : "+ DTO.getProductId())
         );
 
@@ -36,5 +35,11 @@ public class ProductService {
                 throw new RuntimeException("중복된 상품 ID가 포함되어 있습니다: " + product.getProductId());
             }
         }
+    }
+
+    public Product findByProductId(Long productId) {
+        return productRepository.findByProductId(productId).orElseThrow(
+                () -> new RuntimeException("Product not found : "+ productId)
+        );
     }
 }

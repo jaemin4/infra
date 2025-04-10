@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    Optional<Product> findByStockId(Long stockId);
+    Optional<Product> findByProductId(Long stockId);
 
     Product decreaseStock(Product product);
 

@@ -1,25 +1,22 @@
 package com.v01.event;
 
 import com.v01.event.domain.balance.Balance;
-import com.v01.event.domain.balance.BalanceRepository;
 import com.v01.event.domain.balance.BalanceService;
 import com.v01.event.domain.product.Product;
-import com.v01.event.domain.product.ProductRepository;
 import com.v01.event.domain.product.ProductService;
 import com.v01.event.infra.balance.BalanceLocalDatabase;
 import com.v01.event.infra.product.ProductLocalDatabase;
+import com.v01.event.interfaces.model.dto.req.ReqChargeBalanceDto;
 import com.v01.event.interfaces.model.dto.req.ReqDecreaseStockDto;
 import com.v01.event.interfaces.model.dto.req.ReqUseBalanceDto;
 import com.v01.event.interfaces.model.param.ReqPayProduct;
-import com.v01.event.interfaces.model.param.UseBalanceParam;
-import jakarta.annotation.PostConstruct;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,20 +36,25 @@ public class UnitTest {
     @Autowired
     ProductLocalDatabase productLocalDatabase;
 
-    //로컬 데이터베이스에 기본 상품 2개 저장
-    //데이터베이스에 이미 기본 상품이 2개 있다고 가정
+    /*
+      todo
+        product(ProductId):1L,2L / Balance(BalanceId,UserId):1L,2L
+        각 케이스마다 해당 ID값 Default 저장
+    */
     @BeforeEach
     void setUp() {
-        Product defaultProduct = new Product(1L, "컴퓨터", 1_000_000L, 10L);
-        Product defaultProduct2 = new Product(2L, "마우스", 10000L, 10L);
+        Product defaultProduct = new Product("컴퓨터", 1_000_000L, 10L);
+        Product defaultProduct2 = new Product("마우스", 10000L, 10L);
         productLocalDatabase.save(defaultProduct);
         productLocalDatabase.save(defaultProduct2);
 
         Balance defaultUser = new Balance(1L,100_000_000L);
+        Balance defaultUser2 = new Balance(2L,0L);
+
         balanceLocalDatabase.save(defaultUser);
+        balanceLocalDatabase.save(defaultUser2);
+
     }
-
-
 
     @DisplayName("요청 상품을 찾지 못하면 예외를 발생시킨다")
     @Test
@@ -115,7 +117,7 @@ public class UnitTest {
     void notFoundInBalanceTable() {
         ReqUseBalanceDto dto = new ReqUseBalanceDto(5L,10000L);
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            balanceService.useableBalnce(dto);
+            balanceService.usableBalance(dto);
         });
 
         assertEquals(dto.getUserId().toString() + " : 해당 유저가 존재하지 않습니다",exception.getMessage());
@@ -126,12 +128,33 @@ public class UnitTest {
     void notEnoughBalanceThenProductPrice() {
         ReqUseBalanceDto dto = new ReqUseBalanceDto(1L,100_000_001L);
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            balanceService.useableBalnce(dto);
+            balanceService.usableBalance(dto);
         });
 
         assertEquals("잔액이 부족합니다.",exception.getMessage());
     }
 
+    @Test
+    @DisplayName("잔액이 정상적으로 충전된다.")
+    void chargeBalance() {
+        Long userId = 2L;
+        ReqChargeBalanceDto dto = new ReqChargeBalanceDto(userId, 5000L);
+        Balance updated = balanceService.chargeableBalance(dto);
+
+        assertEquals(5000L, updated.getAmount());
+    }
+
+    @Test
+    @DisplayName("잔액이 정상적으로 사용된다.")
+    void useBalance() {
+        Long userId = 3L;
+        balanceLocalDatabase.save(new Balance(userId,5000L));
+
+        ReqUseBalanceDto dto = new ReqUseBalanceDto(userId, 5000L);
+        Balance updated = balanceService.usableBalance(dto);
+
+        assertEquals(0, updated.getAmount());
+    }
 
 
 

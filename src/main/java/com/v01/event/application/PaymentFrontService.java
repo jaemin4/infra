@@ -50,8 +50,8 @@ public class PaymentFrontService {
         }
 
         // TODO 잔액 사용 + 유저 유효성
-        Balance balance = balanceService.useableBalnce(
-                new ReqUseBalanceDto(param.getUserId(),totalAmount)
+        Balance balance = balanceService.usableBalance(new ReqUseBalanceDto(
+                param.getUserId(),totalAmount)
         );
 
         // TODO 잔액 사용내역 저장
