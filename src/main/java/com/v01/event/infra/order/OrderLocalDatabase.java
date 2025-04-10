@@ -1,8 +1,11 @@
 package com.v01.event.infra.order;
 
 import com.v01.event.domain.order.Order;
+import com.v01.event.domain.payment.PaymentHistory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +28,8 @@ public class OrderLocalDatabase {
         return Optional.ofNullable(localDb.get(orderId));
     }
 
-
+    public List<Order> findAll() {
+        return new ArrayList<>(localDb.values());
+    }
 
 }

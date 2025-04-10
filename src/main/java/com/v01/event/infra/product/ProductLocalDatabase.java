@@ -1,8 +1,11 @@
 package com.v01.event.infra.product;
 
+import com.v01.event.domain.order.Order;
 import com.v01.event.domain.product.Product;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,5 +44,9 @@ public class ProductLocalDatabase {
 
     public void deleteById(Long productId) {
         localDb.remove(productId);
+    }
+
+    public List<Product> findAll() {
+        return new ArrayList<>(localDb.values());
     }
 }
