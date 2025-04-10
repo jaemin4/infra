@@ -2,6 +2,9 @@ package com.v01.event.infra.payment;
 
 import com.v01.event.domain.payment.PaymentHistory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,4 +26,7 @@ public class PaymentHistoryLocalDatabase {
     }
 
 
+    public List<PaymentHistory> findAll() {
+        return new ArrayList<>(localDb.values());
+    }
 }

@@ -49,28 +49,20 @@ public class PaymentFrontService {
             totalAmount += product.getProductPrice() * reqPayProduct.getQuantity();
         }
 
-        log.info("재고 유효성 통과");
-
         // TODO 잔액 사용 + 유저 유효성
         Balance balance = balanceService.useableBalnce(
                 new ReqUseBalanceDto(param.getUserId(),totalAmount)
         );
 
-        log.info("잔액 유효성 통과");
-
-        // TODO 잔액 변경내역 저장
+        // TODO 잔액 사용내역 저장
         balanceService.recordBalanceHistory(new ReqRecordBalanceHistoryDto(
-                param.getUserId(),totalAmount)
+                param.getUserId(),totalAmount * (-1))
         );
-
-        log.info("잔역 변경내역 저장 통과");
 
         // TODO 결제내역 저장
         paymentHistoryService.recordPaymentHistory(new ReqPaymentHistoryDto(
-                param.getUserId(),totalAmount,balanceReason)
+                param.getUserId(),totalAmount * (-1),balanceReason)
         );
-
-        log.info("결제내역 저장 통과");
 
         return new ResCompletePaymentDto(
                 updatedProducts,

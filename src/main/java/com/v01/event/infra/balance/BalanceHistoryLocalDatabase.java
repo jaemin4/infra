@@ -1,10 +1,13 @@
 package com.v01.event.infra.balance;
 
+import com.fasterxml.classmate.Annotations;
 import com.v01.event.domain.balance.BalanceHistory;
 import com.v01.event.domain.product.Product;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,4 +26,7 @@ public class BalanceHistoryLocalDatabase {
     }
 
 
+    public List<BalanceHistory> findAll() {
+        return new ArrayList<>(localDb.values());
+    }
 }
