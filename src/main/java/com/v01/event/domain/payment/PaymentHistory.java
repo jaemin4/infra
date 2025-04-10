@@ -13,11 +13,17 @@ public class PaymentHistory {
     private Long paymentHistoryId;
     private Long userId;
     private Long amount;
-    private String reason;
+    private Long orderId;
+    private String transactionId;
+    private String status;
 
-    public PaymentHistory(Long userId, Long amount, String reason) {
+    public PaymentHistory(Long userId, Long amount, Long orderId, String transactionId, String status) {
         this.userId = userId;
         this.amount = amount;
-        this.reason = reason;
+        this.orderId = orderId;
+        this.transactionId = transactionId;
+        this.status = status;
     }
+
+
 }

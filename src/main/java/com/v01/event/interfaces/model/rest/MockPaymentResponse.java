@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.model.dto.req;
+package com.v01.event.interfaces.model.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqPaymentHistoryDto {
-    private Long userId;
-    private Long amount;
-    private Long orderId;
-    private String transactionId;
+public class MockPaymentResponse {
     private String status;
+    private String transactionId;
+    private String message;
+    private String id;
 }

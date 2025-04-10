@@ -14,7 +14,9 @@ public class PaymentHistoryService {
         paymentHistoryRepository.save(new PaymentHistory(
                 DTO.getUserId(),
                 DTO.getAmount(),
-                DTO.getReason()
+                DTO.getOrderId(),
+                DTO.getTransactionId(),
+                DTO.getStatus()
         ));
     }
 

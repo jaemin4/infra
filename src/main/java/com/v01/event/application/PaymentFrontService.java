@@ -7,9 +7,12 @@ import com.v01.event.domain.order.OrderItem;
 import com.v01.event.domain.order.OrderService;
 import com.v01.event.domain.payment.PaymentHistoryService;
 import com.v01.event.domain.product.ProductService;
+import com.v01.event.infra.payment.PaymentMockService;
 import com.v01.event.interfaces.model.dto.req.*;
 import com.v01.event.interfaces.model.dto.res.ResCompletePaymentDto;
+import com.v01.event.interfaces.model.param.PaymentMockParam;
 import com.v01.event.interfaces.model.param.PaymentParam;
+import com.v01.event.interfaces.model.rest.MockPaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ public class PaymentFrontService {
     private final PaymentHistoryService paymentHistoryService;
     private final ProductService productService;
     private final OrderService orderService;
+    private final PaymentMockService paymentMockService;
 
     public ResCompletePaymentDto completePayment(PaymentParam param) {
         final Long paramOrderId = param.getOrderId();
@@ -49,15 +53,23 @@ public class PaymentFrontService {
                 paramUserId,totalAmount * (-1))
         );
 
+        // todo 결제 API 호출 및 검증
+       MockPaymentResponse mockPaymentResponse = paymentMockService.callAndValidateMockApi(new PaymentMockParam(
+               paramOrderId, paramUserId, totalAmount)
+       );
+       String transactionId =  mockPaymentResponse.getTransactionId();
+       String status = mockPaymentResponse.getStatus();
+
         // TODO 결제내역 저장
         paymentHistoryService.recordPaymentHistory(new ReqPaymentHistoryDto(
-                paramUserId,totalAmount * (-1), paramOrderId)
+                paramUserId,totalAmount * (-1), paramOrderId,transactionId,status)
         );
 
         return new ResCompletePaymentDto(
                 paramOrderId, paramUserId,totalAmount,orderItems
         );
     }
+
 
 
 }
