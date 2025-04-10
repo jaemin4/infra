@@ -1,6 +1,6 @@
 package com.v01.event.domain.payment;
 
-import com.v01.event.interfaces.dto.req.ReqPaymentHistoryDto;
+import com.v01.event.interfaces.model.dto.req.ReqPaymentHistoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

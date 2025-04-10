@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.dto.req;
+package com.v01.event.interfaces.model.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package com.v01.event.interfaces.api;
 
-import com.v01.event.interfaces.dto.res.ResCompletePaymentDto;
-import com.v01.event.interfaces.rest.ApiResponse;
-import com.v01.event.interfaces.front.PaymentFrontService;
-import com.v01.event.interfaces.param.PaymentParam;
+import com.v01.event.interfaces.model.dto.res.ResCompletePaymentDto;
+import com.v01.event.interfaces.model.rest.ApiResponse;
+import com.v01.event.application.PaymentFrontService;
+import com.v01.event.interfaces.model.param.PaymentParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentFrontService paymentFrontService;
-
 
     @PostMapping(value = "/pay")
     public ResponseEntity<ApiResponse<ResCompletePaymentDto>> completePayment(@RequestBody PaymentParam param) {

@@ -18,7 +18,9 @@ public class BalanceHistoryLocalDatabase {
 
     public void save(BalanceHistory balanceHistory) {
         Long id = idGenerator.incrementAndGet();
+        balanceHistory.setBalanceHistoryId(id);
         localDb.put(id,balanceHistory);
     }
+
 
 }

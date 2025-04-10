@@ -7,4 +7,5 @@ public interface ProductRepository {
     Optional<Product> findByStockId(Long stockId);
 
     Product decreaseStock(Product product);
+
 }

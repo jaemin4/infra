@@ -1,7 +1,7 @@
 package com.v01.event.domain.balance;
 
-import com.v01.event.interfaces.dto.req.ReqRecordBalanceHistoryDto;
-import com.v01.event.interfaces.dto.req.ReqUseBalanceDto;
+import com.v01.event.interfaces.model.dto.req.ReqRecordBalanceHistoryDto;
+import com.v01.event.interfaces.model.dto.req.ReqUseBalanceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class BalanceService {
         }
 
         balance.setAmount(balance.getAmount() - DTO.getAmount());
-        return balanceRepository.updateOrSaveBalance(balance);
+        return balanceRepository.updateBalance(balance);
     }
 
     public void recordBalanceHistory(final ReqRecordBalanceHistoryDto DTO) {

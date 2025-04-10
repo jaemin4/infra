@@ -1,6 +1,6 @@
 package com.v01.event.support;
 
-import com.v01.event.interfaces.rest.RestError;
+import com.v01.event.interfaces.model.rest.RestError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.dto.res;
+package com.v01.event.interfaces.model.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResCompletePaymentDto {
-    private String productName;
-    private Long productPrice;
+public class ReqPaymentHistoryDto {
+    private Long userId;
+    private Long amount;
+    private String reason;
 }

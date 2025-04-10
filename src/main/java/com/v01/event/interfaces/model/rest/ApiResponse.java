@@ -1,4 +1,4 @@
-package com.v01.event.interfaces.rest;
+package com.v01.event.interfaces.model.rest;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

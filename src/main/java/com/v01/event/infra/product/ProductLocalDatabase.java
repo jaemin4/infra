@@ -15,14 +15,6 @@ public class ProductLocalDatabase {
     private final Map<Long, Product> localDb = new ConcurrentHashMap<>(1);
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    @PostConstruct
-    public void init() {
-        // 기본 상품 등록: 컴퓨터(id=1, 가격=1_000_000원, 수량=10개)
-        Product defaultProduct = new Product(1L, "컴퓨터", 1_000_000L, 10L);
-        localDb.put(defaultProduct.getProductId(), defaultProduct);
-    }
-
-
     public Optional<Product> findByStockId(Long stockId) {
         return Optional.ofNullable(localDb.get(stockId));
     }
@@ -38,7 +30,11 @@ public class ProductLocalDatabase {
 
     }
 
-
+    public void save(Product product) {
+        Long id = idGenerator.getAndIncrement();
+        product.setProductId(id);
+        localDb.put(id, product);
+    }
 
 
 }
