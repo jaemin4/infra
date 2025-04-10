@@ -1,16 +1,19 @@
 package com.v01.event.interfaces.model.dto.req;
 
+import com.v01.event.interfaces.model.param.OrderItemParam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqPaymentHistoryDto {
+@Getter
+@Setter
+public class ReqSaveOrderDto {
     private Long userId;
-    private Long amount;
-    private Long orderId;
+    private List<OrderItemParam> items;
+    private Long totalAmount;
 }

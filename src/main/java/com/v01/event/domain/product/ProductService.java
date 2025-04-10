@@ -1,7 +1,8 @@
 package com.v01.event.domain.product;
 
+import com.v01.event.interfaces.model.dto.req.ReqCalculateTotalAmountDto;
 import com.v01.event.interfaces.model.dto.req.ReqDecreaseStockDto;
-import com.v01.event.interfaces.model.param.ReqPayProduct;
+import com.v01.event.interfaces.model.param.ReqValidateNoDuplicateItemsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.HashSet;
@@ -27,10 +28,10 @@ public class ProductService {
         return productRepository.decreaseStock(product);
     }
 
-    public void validateNoDuplicateProducts(List<ReqPayProduct> payProductList) {
+    public void validateNoDuplicateProducts(List<ReqValidateNoDuplicateItemsDto> DTO) {
         Set<Long> productIds = new HashSet<>();
 
-        for (ReqPayProduct product : payProductList) {
+        for (ReqValidateNoDuplicateItemsDto product : DTO) {
             if (!productIds.add(product.getProductId())) {
                 throw new RuntimeException("중복된 상품 ID가 포함되어 있습니다: " + product.getProductId());
             }
@@ -41,5 +42,15 @@ public class ProductService {
         return productRepository.findByProductId(productId).orElseThrow(
                 () -> new RuntimeException("Product not found : "+ productId)
         );
+    }
+
+    public long calculateTotalAmount(List<ReqCalculateTotalAmountDto> items) {
+        return items.stream()
+                .mapToLong(item -> {
+                    Product product = productRepository.findByProductId(item.getProductId()).orElseThrow(
+                            ()->new RuntimeException("Product not found : "+ item.getProductId()));
+                    return product.getProductPrice() * item.getQuantity();
+                })
+                .sum();
     }
 }

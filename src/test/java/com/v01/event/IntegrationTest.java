@@ -10,15 +10,13 @@ import com.v01.event.infra.payment.PaymentHistoryLocalDatabase;
 import com.v01.event.infra.product.ProductLocalDatabase;
 import com.v01.event.interfaces.model.param.CompleteChargeParam;
 import com.v01.event.interfaces.model.param.PaymentParam;
-import com.v01.event.interfaces.model.param.ReqPayProduct;
+import com.v01.event.interfaces.model.param.ReqValidateNoDuplicateItemsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -65,9 +63,9 @@ public class IntegrationTest {
     void paymentCompleteTest() {
         Long userId = 1L;
 
-        List<ReqPayProduct> products = List.of(
-                new ReqPayProduct(1L, 1L), // 컴퓨터 1개
-                new ReqPayProduct(2L, 2L)  // 마우스 2개
+        List<ReqValidateNoDuplicateItemsDto> products = List.of(
+                new ReqValidateNoDuplicateItemsDto(1L, 1L), // 컴퓨터 1개
+                new ReqValidateNoDuplicateItemsDto(2L, 2L)  // 마우스 2개
         );
 
         paymentFrontService.completePayment(new PaymentParam(userId, products));
@@ -116,4 +114,8 @@ public class IntegrationTest {
         assertEquals(userId, history.getUserId());
         assertEquals(amount, history.getAmount());
     }
+
+
+
+
 }

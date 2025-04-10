@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class ProductLocalDatabase {
 
-    private final Map<Long, Product> localDb = new ConcurrentHashMap<>(1);
+    private final Map<Long, Product> localDb = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     public Optional<Product> findByProductId(Long productId) {

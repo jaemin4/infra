@@ -8,14 +8,13 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResCompletePaymentDto {
+@Getter
+@Setter
+public class ResCompleteOrderDto {
     private Long orderId;
-    private Long userId;
     private Long totalAmount;
-    private List<OrderItem> orderItems;
-
+    private String status;
+    private List<OrderItem> items;
 }

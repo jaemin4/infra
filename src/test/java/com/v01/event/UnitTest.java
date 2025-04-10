@@ -9,16 +9,13 @@ import com.v01.event.infra.product.ProductLocalDatabase;
 import com.v01.event.interfaces.model.dto.req.ReqChargeBalanceDto;
 import com.v01.event.interfaces.model.dto.req.ReqDecreaseStockDto;
 import com.v01.event.interfaces.model.dto.req.ReqUseBalanceDto;
-import com.v01.event.interfaces.model.param.ReqPayProduct;
-import org.junit.jupiter.api.AfterEach;
+import com.v01.event.interfaces.model.param.ReqValidateNoDuplicateItemsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -41,6 +38,7 @@ public class UnitTest {
         product(ProductId):1L,2L / Balance(BalanceId,UserId):1L,2L
         각 케이스마다 해당 ID값 Default 저장
     */
+
     @BeforeEach
     void setUp() {
         Product defaultProduct = new Product("컴퓨터", 1_000_000L, 10L);
@@ -87,9 +85,9 @@ public class UnitTest {
     @DisplayName("결제 파라미터에 중복된 상품 ID가 존재하면 예외를 발생시킨다")
     @Test
     void duplicateProductIdsExistInPaymentParam() {
-        List<ReqPayProduct> listProduct = List.of(
-                new ReqPayProduct(1L, 1L),
-                new ReqPayProduct(1L, 2L)
+        List<ReqValidateNoDuplicateItemsDto> listProduct = List.of(
+                new ReqValidateNoDuplicateItemsDto(1L, 1L),
+                new ReqValidateNoDuplicateItemsDto(1L, 2L)
         );
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -102,9 +100,9 @@ public class UnitTest {
     @DisplayName("중복 상품 ID가 없으면 예외가 발생하지 않는다")
     @Test
     void noDuplicateProductIdsInPaymentParam() {
-        List<ReqPayProduct> listProduct = List.of(
-                new ReqPayProduct(1L, 1L),
-                new ReqPayProduct(2L, 2L)
+        List<ReqValidateNoDuplicateItemsDto> listProduct = List.of(
+                new ReqValidateNoDuplicateItemsDto(1L, 1L),
+                new ReqValidateNoDuplicateItemsDto(2L, 2L)
         );
 
         assertDoesNotThrow(() -> {
@@ -134,8 +132,8 @@ public class UnitTest {
         assertEquals("잔액이 부족합니다.",exception.getMessage());
     }
 
-    @Test
     @DisplayName("잔액이 정상적으로 충전된다.")
+    @Test
     void chargeBalance() {
         Long userId = 2L;
         ReqChargeBalanceDto dto = new ReqChargeBalanceDto(userId, 5000L);
@@ -144,8 +142,8 @@ public class UnitTest {
         assertEquals(5000L, updated.getAmount());
     }
 
-    @Test
     @DisplayName("잔액이 정상적으로 사용된다.")
+    @Test
     void useBalance() {
         Long userId = 3L;
         balanceLocalDatabase.save(new Balance(userId,5000L));
@@ -156,9 +154,18 @@ public class UnitTest {
         assertEquals(0, updated.getAmount());
     }
 
+    // todo 상품조회
+    @DisplayName("productId에 해당하는 상품이 정상적으로 조회된다.")
+    @Test
+    void fetchProductById(){
+        Long productId = 2L;
+        String productName = "마우스";
+        Long productPrice = 10000L;
 
+        Product product = productService.findByProductId(productId);
 
-
-
-
+        assertEquals(productId, product.getProductId());
+        assertEquals(productName, product.getProductName());
+        assertEquals(productPrice, product.getProductPrice());
+    }
 }
